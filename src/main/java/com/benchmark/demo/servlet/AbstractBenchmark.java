@@ -16,7 +16,9 @@ import org.apache.log4j.Logger;
 
 import com.benchmark.demo.errors.ExceptionError;
 import com.benchmark.demo.errors.ResponseTimeMeter;
+import com.benchmark.demo.servlet.DemoConstants;
 import com.benchmark.demo.servlet.DemoConstants.SCENARIOS;
+
 
 public abstract class AbstractBenchmark extends HttpServlet {
 
@@ -54,8 +56,6 @@ public abstract class AbstractBenchmark extends HttpServlet {
 				" for user session: " + req.getSession(true).getId());
 
 		processDemoScenario(req);
-
-		processRequest(req, resp);
 
 		if (benchmarkIterations < 0 || benchmarkIterations == null) {
 			benchmarkIterations = DemoConstants.DEFAULT_ITERATIONS;
@@ -167,6 +167,9 @@ public abstract class AbstractBenchmark extends HttpServlet {
 
 			treeMap.put(key, value);
 		}
+		
+		/** we'll always set the response time metering rate, regardless of the scenario */
+		setResponseTimeMeterRate(treeMap); 
 
 		if (treeMap.containsKey(DemoConstants.SCENARIO_KEY_PARM)) {
 			String v = treeMap.get(DemoConstants.SCENARIO_KEY_PARM);
@@ -175,7 +178,6 @@ public abstract class AbstractBenchmark extends HttpServlet {
 
 			switch (s) {
 			case NULL_POINTER: logger.info("Scenario is Null Pointer Exception"); ExceptionError.throwNullPointer(); break;
-			case RESPONSE_TIME_METER: logger.info("Scenario is response-time metering"); setResponseTimeMeterRate(treeMap); break;
 			case UNKNOWN: logger.info("Scenario " + v + " is Unknown, nothing to do."); break;
 			default: logger.info("Error " + v + " is Unknown, nothing to do.");
 			}
@@ -218,14 +220,6 @@ public abstract class AbstractBenchmark extends HttpServlet {
 			this.benchmarkComplexity = DemoConstants.DEFAULT_COMPLEXITY;
 		}
 	}
-
-
-	/** 
-	 * process request 
-	 * 
-	 * @throws IOException 
-	 * @throws ServletException */
-	protected abstract void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
 
 
 	public void setRequestedScenario(SCENARIOS requestedScenario) {

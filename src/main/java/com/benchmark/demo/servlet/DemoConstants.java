@@ -15,7 +15,6 @@ public class DemoConstants {
 
 	public enum SCENARIOS {
 		NULL_POINTER("null-pointer"),
-		RESPONSE_TIME_METER("response-time-meter"),
 		UNKNOWN("unknown");
 
 		private String type = "unknown";

@@ -17,13 +17,7 @@
 package com.benchmark.demo.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.jms.ConnectionFactory;
-import javax.jms.Queue;
-import javax.jms.Topic;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -64,14 +58,5 @@ public class BenchmarkServlet extends AbstractBenchmark {
 	public int getVarianceResponseTimeMillis() {
 		return 1000;
 	}
-
-	@Override
-	protected void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-		logger.debug("Processing Parameters from Web Request");
-
-		if (getRequestedScenario() == SCENARIOS.RESPONSE_TIME_METER) {
-			updateResponseTimeMetering(req);
-		}
-	}		
+	
 }
